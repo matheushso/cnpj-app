@@ -1,0 +1,92 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+        "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:p="http://primefaces.org/ui"
+      xml:lang="en"
+      xmlns:f="http://xmlns.jcp.org/jsf/core">
+<h:head>
+    <title>Consultar CNPJ</title>
+</h:head>
+<f:view>
+    <h:body>
+        <p:messages id="messages" showDetail="true" closable="true">
+            <p:autoUpdate/>
+        </p:messages>
+        <h:form id="Formulario">
+
+            <h3>Consultar CNPJ</h3>
+            <p:inputText id="cnpjInput" value="#{cnpjView.cnpjInfoDTO.cnpj}" placeholder="Digite o CNPJ"/>
+            <p:commandButton value="Consultar" action="#{cnpjView.searchCNPJ()}" update="@form"
+                             style="margin-left: 10px"/>
+
+            <p:panel id="resultadoPanel" rendered="#{cnpjView.cnpjInfoDTO.razaoSocial ne null}">
+
+                <h3>Detalhes do CNPJ</h3>
+
+                <h:panelGrid columns="4">
+                    <h:outputLabel value="Razão Social:"/>
+                    <p:inputText value="#{cnpjView.cnpjInfoDTO.razaoSocial}" disabled="true"
+                                 style="width: 500px; margin-left: 5px; margin-right: 20px"/>
+
+                    <h:outputLabel value="Cidade:"/>
+                    <p:inputText value="#{cnpjView.cnpjInfoDTO.estabelecimento.cidade.nome}" disabled="true"
+                                 style="width: 500px; margin-left: 5px; margin-right: 20px"/>
+
+                    <h:outputLabel value="Situação Cadastral:"/>
+                    <p:inputText value="#{cnpjView.cnpjInfoDTO.estabelecimento.situacaoCadastral}" disabled="true"
+                                 style="width: 500px; margin-left: 5px; margin-right: 20px"/>
+
+                    <h:outputLabel value="Data de Cadastro:"/>
+                    <p:inputText value="#{cnpjView.cnpjInfoDTO.estabelecimento.dataInicioAtividade}" disabled="true"
+                                 style="width: 500px; margin-left: 5px; margin-right: 20px"/>
+
+                </h:panelGrid>
+
+                <div style="margin-top: 100px">
+                    <h3>Informe os campos: </h3>
+                    <h:outputLabel value="Endereço:"/>
+                    <p:inputText value="#{cnpjView.cnpjInfoDTO.endereco}" placeholder="Digite o Endereço"
+                                 style="width: 500px; margin-left: 5px; margin-right: 20px"/>
+
+                    <h:outputLabel value="Telefone:"/>
+                    <p:inputText value="#{cnpjView.cnpjInfoDTO.telefone}" placeholder="Digite o Telefone"
+                                 style="width: 500px; margin-left: 5px; margin-right: 20px"/>
+
+                    <p:commandButton value="Salvar" action="#{cnpjView.saveCNPJ()}" update="@form"
+                                     style="margin-left: 10px"/>
+                </div>
+
+            </p:panel>
+
+            <p:remoteCommand name="loadTable" action="#{cnpjView.findAll()}" autoRun="true" />
+
+            <p:dataTable id="tabelaCNPJ" var="cnpj" value="#{cnpjView.cnpjList}" paginator="true" rows="10"
+                         emptyMessage="Não há CNPJ´s cadastrados.">
+                <p:column headerText="ID">
+                    <h:outputText value="#{cnpj.id}"/>
+                </p:column>
+                <p:column headerText="Razão Social">
+                    <h:outputText value="#{cnpj.razaoSocial}"/>
+                </p:column>
+                <p:column headerText="Cidade">
+                    <h:outputText value="#{cnpj.cidade}"/>
+                </p:column>
+                <p:column headerText="Situação Cadastral">
+                    <h:outputText value="#{cnpj.situacaoCadastral}"/>
+                </p:column>
+                <p:column headerText="Data de Cadastro">
+                    <h:outputText value="#{cnpj.dataDeCadastro}"/>
+                </p:column>
+                <p:column headerText="Endereço">
+                    <h:outputText value="#{cnpj.endereco}"/>
+                </p:column>
+                <p:column headerText="Telefone">
+                    <h:outputText value="#{cnpj.telefone}"/>
+                </p:column>
+            </p:dataTable>
+
+        </h:form>
+    </h:body>
+</f:view>
+</html>

@@ -1,0 +1,106 @@
+openapi: 3.0.3
+info:
+  title: API Documentation
+  description: API documentation for your project
+  version: 1.0.0
+paths:
+  /api/v1/cnpj:
+    get:
+      tags:
+        - CNPJ
+      summary: Get all CNPJ entries
+      responses:
+        '200':
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/CNPJ'
+        '400':
+          description: Unexpected error
+    post:
+      tags:
+        - CNPJ
+      summary: Add a new CNPJ entry
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CNPJInfoDTO'
+      responses:
+        '200':
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CNPJ'
+        '400':
+          description: Unexpected error
+
+  /api/v1/cnpj/{cnpj}:
+    get:
+      tags:
+        - CNPJ
+      summary: Get CNPJ details by CNPJ number
+      parameters:
+        - name: cnpj
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CNPJInfoDTO'
+        '400':
+          description: CNPJ not found
+components:
+  schemas:
+    CNPJ:
+      type: object
+      properties:
+        id:
+          type: integer
+        razaoSocial:
+          type: string
+        cidade:
+          type: string
+        situacaoCadastral:
+          type: string
+        dataDeCadastro:
+          type: string
+        endereco:
+          type: string
+        telefone:
+          type: string
+    CNPJInfoDTO:
+      type: object
+      properties:
+        razaoSocial:
+          type: string
+        estabelecimento:
+          $ref: '#/components/schemas/EstabelecimentoDTO'
+        endereco:
+          type: string
+        telefone:
+          type: string
+    EstabelecimentoDTO:
+      type: object
+      properties:
+        situacaoCadastral:
+          type: string
+        dataInicioAtividade:
+          type: string
+        cidade:
+          $ref: '#/components/schemas/CidadeDTO'
+    CidadeDTO:
+      type: object
+      properties:
+        nome:
+          type: string
